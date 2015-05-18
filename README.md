@@ -1,31 +1,51 @@
 ghost
 =========
 
-A brief description of ghost goes here.
+Installs Ghost blogging server as a service.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Debian or Ubuntu
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yaml
+ghost_version: '0.6.2'
+ghost_env_vars:
+  NODE_ENV: production
+
+ghost_public_hostname: 'http://blog.example.com'
+ghost_bind_address: "0.0.0.0"
+ghost_port: 2368
+ghost_allow_filestorage: true
+ghost_compress: false # favor nginx compression
+ghost_forceAdminSSL: true
+
+ghost_mail:
+  transport: SMTP
+  options:
+    host: YOUR-SES-SERVER-NAME
+    port: 465
+    service: SES
+    auth:
+      user: 'YOUR-SES-ACCESS-KEY-ID'
+      pass: 'YOUR-SES-SECRET-ACCESS-KEY'
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* gotansible.runit
+* gotansible.nodejs
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: gotansible.ghost, ghost_public_hostname: lovemyblog.com }
 
 License
 -------
@@ -35,5 +55,4 @@ MIT
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
-
+Created by Franklin Wise in Santa Monica, CA.

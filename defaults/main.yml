@@ -13,7 +13,6 @@ ghost_version: '0.6.2'
 ghost_archive: ghost-{{ ghost_version }}
 ghost_archive_ext: .zip
 ghost_archive_url: "https://ghost.org/zip"
-ghost_site_type: production
 ghost_build_dir: /tmp/ghost
 ghost_env_vars:
   NODE_ENV: production
