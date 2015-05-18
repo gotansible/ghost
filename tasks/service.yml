@@ -1,0 +1,13 @@
+---
+
+- name: service - setup and run
+  runit:
+    name: "{{ ghost_service_name }}"
+    enabled: yes
+    state: up
+    timeout: 10
+    user: "{{ ghost_user }}"
+    command: "node  {{ ghost_install_dir }}/current/index.js"
+    env_vars: "{{ghost_env_vars}}"
+  register: ghost_service_status
+

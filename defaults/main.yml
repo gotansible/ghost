@@ -1,0 +1,40 @@
+---
+
+ghost_service_name: ghost
+ghost_user: "{{ ghost_service_name }}"
+ghost_group: "{{ ghost_service_name }}"
+ghost_config_dir: /etc/{{ ghost_service_name }}
+ghost_install_dir: /opt/{{ ghost_service_name }}
+ghost_build_dir: /temp/{{ ghost_service_name }}
+ghost_log_dir: /var/log/{{ ghost_service_name }}
+ghost_content_dir: /var/{{ ghost_service_name }}/content
+
+ghost_version: '0.6.2'
+ghost_archive: ghost-{{ ghost_version }}
+ghost_archive_ext: .zip
+ghost_archive_url: "https://ghost.org/zip"
+ghost_site_type: production
+ghost_build_dir: /tmp/ghost
+ghost_env_vars:
+  NODE_ENV: production
+
+
+#ghost_public_hostname: 'http://{{ ansible_eth0.ipv4.address }}'
+ghost_public_hostname: 'http://blog.example.com'
+ghost_bind_address: "0.0.0.0"
+ghost_port: 2368
+ghost_allow_filestorage: true
+ghost_compress: false # favor nginx compression
+ghost_forceAdminSSL: true
+
+ghost_mail:
+  transport: SMTP
+  options:
+    host: YOUR-SES-SERVER-NAME
+    port: 465
+    service: SES
+    auth:
+      user: 'YOUR-SES-ACCESS-KEY-ID'
+      pass: 'YOUR-SES-SECRET-ACCESS-KEY'
+
+

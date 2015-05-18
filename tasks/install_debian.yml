@@ -1,0 +1,67 @@
+---
+
+
+- name: install - create group
+  group:
+    name={{ ghost_group }}
+    system=yes
+
+- name: install - create user
+  user:
+    name={{ ghost_user }}
+    group={{ ghost_group }}
+    system=yes
+    createhome=no
+
+- name: install - create build dir
+  file:
+    state=directory
+    path={{ ghost_build_dir }}
+
+- name: install - check already downloaded
+  stat: path={{ ghost_build_dir }}/{{ ghost_archive }}{{ ghost_archive_ext }}
+  register: ghost_download
+
+- name: install - download ghost
+  get_url:
+    url={{ ghost_archive_url }}/{{ ghost_archive }}{{ ghost_archive_ext }}
+    dest={{ ghost_build_dir }}
+  when: not ghost_download.stat.exists
+
+- name: install - create install dir
+  file:
+    state=directory
+    path={{ ghost_install_dir }}/{{ ghost_archive }}
+    owner={{ ghost_user }}
+    group={{ ghost_group }}
+    mode=0755
+
+- name: install - check already installed
+  stat: path={{ ghost_install_dir }}/{{ ghost_archive }}/index.js
+  register: ghost_installed
+
+- name: install - unarchive
+  unarchive:
+    src={{ ghost_build_dir }}/{{ ghost_archive }}{{ ghost_archive_ext }}
+    dest={{ ghost_install_dir }}/{{ ghost_archive }}
+    owner={{ ghost_user }}
+    group={{ ghost_group }}
+    copy=no
+    creates={{ ghost_install_dir }}/{{ ghost_archive }}/index.js
+  register: unarchived
+  when: not ghost_installed.stat.exists
+
+- name: install - npm to finish install
+  npm:
+    path={{ ghost_install_dir }}/{{ ghost_archive }}
+    production=yes
+    state=latest
+  when: not ghost_installed.stat.exists
+
+- name: install - make current
+  file:
+    state=link
+    path={{ ghost_install_dir }}/current
+    src={{ ghost_install_dir }}/{{ ghost_archive }}
+  notify: restart ghost
+

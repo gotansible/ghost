@@ -1,0 +1,50 @@
+---
+
+- name: config - create config dir
+  file:
+    state=directory
+    path={{ ghost_config_dir }}
+    mode=755
+    owner={{ ghost_user }}
+    group={{ ghost_group }}
+
+- name: config - create log dir
+  file:
+    state=directory
+    path={{ ghost_log_dir }}
+    mode=0755
+    owner={{ ghost_user }}
+    group={{ ghost_group }}
+
+- name: config - create content dir
+  file:
+    state=directory
+    path={{ item }}
+    mode=0755
+    owner={{ ghost_user }}
+    group={{ ghost_group }}
+  with_items:
+    - "{{ ghost_content_dir }}"
+    - "{{ ghost_content_dir }}/data"
+    - "{{ ghost_content_dir }}/themes"
+    - "{{ ghost_content_dir }}/images"
+    - "{{ ghost_content_dir }}/apps"
+
+- name: config - casper theme check
+  stat: path={{ ghost_content_dir }}/themes/casper
+  register: casper
+
+- name: config - install default theme
+  command: cp -r {{ ghost_install_dir }}/current/content/themes/casper {{ ghost_content_dir }}/themes/
+  when: not casper.stat.exists
+
+- name: config - install configs
+  template:
+    src={{ item }}.j2
+    dest={{ ghost_install_dir }}/current/{{ item }}
+    owner={{ ghost_user }}
+    group={{ ghost_group }}
+  with_items:
+    - config.js
+
+
