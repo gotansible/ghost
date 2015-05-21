@@ -2,7 +2,7 @@
 
 ghost_service_name: ghost
 ghost_user: "{{ ghost_service_name }}"
-ghost_group: "{{ ghost_service_name }}"
+ghost_group: "{{ ghost_user }}"
 ghost_config_dir: /etc/{{ ghost_service_name }}
 ghost_install_dir: /opt/{{ ghost_service_name }}
 ghost_build_dir: /temp/{{ ghost_service_name }}
