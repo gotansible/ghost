@@ -1,6 +1,11 @@
 ---
 
 - name: restart ghost
-  runit: name={{ ghost_service_name }} state=up timeout=9 action=restart
+  runit:
+    name={{ ghost_service_name }} 
+    action=restart
+    state=up
+    enabled=true
+    timeout=9
   when: not ghost_service_status.restarted
 

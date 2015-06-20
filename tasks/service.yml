@@ -4,7 +4,7 @@
   runit:
     name: "{{ ghost_service_name }}"
     enabled: yes
-    state: up
+    state: start
     timeout: 10
     user: "{{ ghost_user }}"
     command: "node  {{ ghost_install_dir }}/current/index.js"
