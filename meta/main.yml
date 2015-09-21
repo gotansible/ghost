@@ -1,7 +1,7 @@
 ---
 dependencies: 
-  - gotansible.runit
-  - gotansible.nodejs
+  - role: gotansible.runit
+  - role: gotansible.nodejs
 
 galaxy_info:
   author: Franklin Wise
