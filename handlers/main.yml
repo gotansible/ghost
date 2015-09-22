@@ -7,5 +7,5 @@
     state=up
     enabled=true
     timeout=9
-  when: not ghost_service_status.restarted
+  when: ghost_service_status is defined and not ghost_service_status.restarted
 
